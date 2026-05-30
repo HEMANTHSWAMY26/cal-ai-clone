@@ -17,7 +17,11 @@ export default function TabsLayout() {
           paddingBottom: Platform.OS === 'ios' ? 30 : 10,
           paddingTop: 10,
           elevation: 0,
-          shadowOpacity: 0,
+          ...Platform.select({
+            ios: { shadowOpacity: 0 },
+            android: {},
+            web: { boxShadow: 'none' },
+          }),
         },
         tabBarLabelStyle: {
           fontSize: 11,
