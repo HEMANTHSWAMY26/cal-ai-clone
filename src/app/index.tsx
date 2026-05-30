@@ -87,43 +87,43 @@ export default function SplashScreen() {
   }));
 
   return (
-    <View className="flex-1 bg-black justify-center items-center">
+    <View className="flex-1 bg-[#050505] justify-center items-center">
       {/* Background radial-like glow effect */}
-      <View className="absolute w-[300px] h-[300px] bg-accent-green/10 rounded-full blur-[80px]" />
+      <View className="absolute w-[350px] h-[350px] bg-[#22C55E]/5 rounded-full blur-[100px]" />
 
       <View className="items-center justify-center relative">
         {/* Pulsing Scan Ring */}
         <TWAnimated.View 
           style={[styles.pulseRing, animatedPulseStyle]}
-          className="absolute border border-accent-green rounded-full"
+          className="absolute border border-[#22C55E]/40 rounded-full"
         />
         
         {/* Main Glowing Circle */}
         <TWAnimated.View 
           style={[styles.logoCircle, animatedLogoStyle]}
-          className="bg-card-primary border border-accent-green/30 justify-center items-center shadow-lg"
+          className="bg-[#111111] border border-[#1E1E1E] justify-center items-center shadow-2xl"
         >
           {/* Inner Scan Line/Eye */}
-          <View className="w-10 h-10 rounded-full border-4 border-accent-green shadow-[0_0_15px_rgba(48,209,89,0.8)] justify-center items-center">
-            <View className="w-3 h-3 bg-accent-green rounded-full" />
+          <View className="w-12 h-12 rounded-full border-4 border-[#22C55E] justify-center items-center shadow-lg shadow-[#22C55E]/30">
+            <View className="w-4 h-4 bg-[#22C55E] rounded-full" />
           </View>
         </TWAnimated.View>
       </View>
 
       {/* Brand Label */}
-      <TWAnimated.View style={[animatedTextStyle]} className="mt-8 items-center">
-        <Text className="text-white text-3xl font-extrabold tracking-[6px] font-rounded">
-          CAL<Text className="text-accent-green">.AI</Text>
+      <TWAnimated.View style={[animatedTextStyle]} className="mt-10 items-center">
+        <Text className="text-white text-4xl font-black tracking-[8px] font-rounded">
+          CAL<Text className="text-[#22C55E]">.AI</Text>
         </Text>
-        <Text className="text-text-secondary text-xs mt-2 uppercase tracking-[3px]">
-          Smart Food Tracking
+        <Text className="text-[#A1A1AA] text-[10px] mt-3 uppercase tracking-[4px] font-bold">
+          Smart Food Intelligence
         </Text>
       </TWAnimated.View>
 
       {/* Footer disclaimer */}
-      <View className="absolute bottom-12 items-center">
-        <Text className="text-text-muted text-[10px] uppercase tracking-wider">
-          Powered by Gemini 2.5
+      <View className="absolute bottom-16 items-center">
+        <Text className="text-[#71717A] text-[9px] uppercase tracking-[2px] font-bold">
+          Powered by Gemini 2.5 Flash
         </Text>
       </View>
     </View>

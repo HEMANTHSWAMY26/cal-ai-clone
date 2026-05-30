@@ -1,14 +1,12 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, ActivityIndicator, Dimensions, Platform } from 'react-native';
+import { StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { Feather } from '@expo/vector-icons';
 import { useAppStore } from '@/store/useAppStore';
 import { analyzeFoodImage } from '@/services/gemini';
-import { View, Text, Pressable, Image } from '@/tw';
-
-const { width } = Dimensions.get('window');
+import { View, Text, Pressable } from '@/tw';
 
 export default function CameraScreen() {
   const router = useRouter();
@@ -30,21 +28,19 @@ export default function CameraScreen() {
 
   const processImageForAI = async (base64Data: string, uri: string) => {
     setIsAnalyzing(true);
-    setLoadingStep('Uploading to analyzer...');
+    setLoadingStep('Uploading image data...');
     
     try {
-      setLoadingStep('Scanning with Gemini AI...');
+      setLoadingStep('Running Gemini AI scanner...');
       const result = await analyzeFoodImage(base64Data, 'image/jpeg');
       
-      setLoadingStep('Done!');
-      // Store result and image URI
+      setLoadingStep('Finalizing macros...');
       setActiveAnalysis({
         imageUri: uri,
         result,
       });
 
       setIsAnalyzing(false);
-      // Route to analysis page
       router.push('/analysis');
     } catch (error) {
       console.error("AI scan failed:", error);
@@ -56,9 +52,9 @@ export default function CameraScreen() {
   const handleCapture = async () => {
     if (cameraRef.current) {
       try {
-        setLoadingStep('Capturing photo...');
+        setLoadingStep('Capturing frame...');
         const photo = await cameraRef.current.takePictureAsync({
-          quality: 0.7,
+          quality: 0.75,
           base64: true,
           skipProcessing: false,
         });
@@ -74,7 +70,6 @@ export default function CameraScreen() {
 
   const handlePickImage = async () => {
     try {
-      // Request gallery permission if not granted
       if (!galleryPermission?.granted) {
         const res = await requestGalleryPermission();
         if (!res.granted) {
@@ -86,7 +81,7 @@ export default function CameraScreen() {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
-        quality: 0.7,
+        quality: 0.75,
         base64: true,
       });
 
@@ -100,32 +95,30 @@ export default function CameraScreen() {
   };
 
   if (!cameraPermission) {
-    // Camera permissions are still loading
     return (
-      <View className="flex-1 bg-black justify-center items-center">
-        <ActivityIndicator size="large" color="#30D158" />
+      <View className="flex-1 bg-[#050505] justify-center items-center">
+        <ActivityIndicator size="large" color="#22C55E" />
       </View>
     );
   }
 
   if (!cameraPermission.granted) {
-    // Camera permissions are not granted yet
     return (
-      <View className="flex-1 bg-black justify-center items-center p-6 gap-4">
-        <View className="w-16 h-16 rounded-full bg-card-primary border border-accent-green/30 justify-center items-center">
-          <Feather name="camera-off" size={28} color="#30D158" />
+      <View className="flex-1 bg-[#050505] justify-center items-center p-6 gap-5">
+        <View className="w-16 h-16 rounded-3xl bg-[#111111] border border-[#1E1E1E] justify-center items-center shadow-lg">
+          <Feather name="camera-off" size={24} color="#FF453A" />
         </View>
-        <Text className="text-white text-xl font-bold font-rounded text-center">
+        <Text className="text-white text-xl font-black font-rounded text-center">
           Camera Access Required
         </Text>
-        <Text className="text-text-secondary text-sm text-center leading-relaxed max-w-xs">
-          To automatically track your calories by snapping a picture, CAL.AI needs camera and library permissions.
+        <Text className="text-[#A1A1AA] text-xs text-center leading-relaxed max-w-[280px]">
+          To automatically parse calorie details by snapping a picture, CAL.AI needs camera and library permissions.
         </Text>
         <Pressable 
           onPress={handleRequestPermissions}
-          className="bg-accent-green px-8 py-3.5 rounded-2xl mt-4 shadow-lg shadow-accent-green/10"
+          className="bg-[#22C55E] px-8 py-3.5 rounded-2xl mt-4 shadow-lg shadow-[#22C55E]/10"
         >
-          <Text className="text-black font-extrabold text-sm uppercase tracking-wider">
+          <Text className="text-black font-black text-xs uppercase tracking-wider font-rounded">
             Grant Access
           </Text>
         </Pressable>
@@ -134,7 +127,7 @@ export default function CameraScreen() {
   }
 
   return (
-    <View className="flex-1 bg-black">
+    <View className="flex-1 bg-[#050505]">
       {/* Camera View Finder */}
       <CameraView
         ref={cameraRef}
@@ -143,37 +136,37 @@ export default function CameraScreen() {
       />
 
       {/* Camera HUD Overlays */}
-      <View className="flex-1 justify-between p-6">
+      <View className="flex-grow justify-between p-6 z-10">
         {/* Top bar controls */}
         <View className="flex-row justify-between items-center mt-12">
           <Pressable 
             onPress={() => router.back()}
-            className="w-10 h-10 rounded-full bg-black/60 border border-white/10 justify-center items-center"
+            className="w-10 h-10 rounded-full bg-black/70 border border-white/10 justify-center items-center"
           >
-            <Feather name="x" size={18} color="white" />
+            <Feather name="x" size={16} color="white" />
           </Pressable>
 
-          <Text className="text-white font-extrabold text-sm uppercase tracking-widest bg-black/60 px-4 py-2 rounded-full border border-white/5 font-rounded">
+          <Text className="text-white font-black text-xs uppercase tracking-[2px] bg-black/70 px-4 py-2 rounded-full border border-white/5 font-rounded">
             Scan Meal
           </Text>
 
           <Pressable 
             onPress={() => setFacing(facing === 'back' ? 'front' : 'back')}
-            className="w-10 h-10 rounded-full bg-black/60 border border-white/10 justify-center items-center"
+            className="w-10 h-10 rounded-full bg-black/70 border border-white/10 justify-center items-center"
           >
-            <Feather name="rotate-cw" size={18} color="white" />
+            <Feather name="rotate-cw" size={16} color="white" />
           </Pressable>
         </View>
 
         {/* Framing box indicator in the center */}
-        <View className="items-center justify-center">
-          <View className="w-64 h-64 border border-white/20 rounded-3xl relative justify-center items-center">
+        <View className="items-center justify-center my-auto">
+          <View className="w-60 h-60 border border-white/10 rounded-3xl relative justify-center items-center bg-black/10">
             {/* Corner styling for the lens container */}
-            <View className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-accent-green rounded-tl-xl" />
-            <View className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-accent-green rounded-tr-xl" />
-            <View className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-accent-green rounded-bl-xl" />
-            <View className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-accent-green rounded-br-xl" />
-            <Text className="text-white/40 text-xs font-medium uppercase tracking-wider font-rounded">
+            <View className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#22C55E] rounded-tl-xl" />
+            <View className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#22C55E] rounded-tr-xl" />
+            <View className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#22C55E] rounded-bl-xl" />
+            <View className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#22C55E] rounded-br-xl" />
+            <Text className="text-white/30 text-[10px] font-black uppercase tracking-wider font-rounded">
               Center Food Here
             </Text>
           </View>
@@ -184,9 +177,9 @@ export default function CameraScreen() {
           {/* Gallery Button */}
           <Pressable 
             onPress={handlePickImage}
-            className="w-12 h-12 rounded-full bg-black/60 border border-white/10 justify-center items-center"
+            className="w-12 h-12 rounded-full bg-black/70 border border-white/10 justify-center items-center"
           >
-            <Feather name="image" size={20} color="white" />
+            <Feather name="image" size={18} color="white" />
           </Pressable>
 
           {/* Main Shutter Button */}
@@ -197,7 +190,7 @@ export default function CameraScreen() {
             />
           </View>
 
-          {/* Quick Manual Entry (Alternative option) */}
+          {/* Quick Manual Entry */}
           <Pressable 
             onPress={() => {
               setActiveAnalysis({
@@ -206,23 +199,23 @@ export default function CameraScreen() {
               });
               router.push('/analysis');
             }}
-            className="w-12 h-12 rounded-full bg-black/60 border border-white/10 justify-center items-center"
+            className="w-12 h-12 rounded-full bg-black/70 border border-white/10 justify-center items-center"
           >
-            <Feather name="edit-3" size={20} color="white" />
+            <Feather name="edit-3" size={18} color="white" />
           </Pressable>
         </View>
       </View>
 
       {/* AI Analysis Overlay Loader */}
       {isAnalyzing && (
-        <View className="absolute inset-0 bg-black/80 justify-center items-center p-6 z-50">
-          <View className="w-56 h-56 bg-card-primary border border-card-secondary rounded-3xl p-6 justify-center items-center shadow-2xl relative overflow-hidden">
-            <View className="absolute w-full h-1 bg-accent-green animate-pulse top-0 left-0 shadow-[0_0_15px_#30D158]" />
-            <ActivityIndicator size="large" color="#30D158" className="mb-4" />
-            <Text className="text-white font-extrabold text-base font-rounded text-center">
+        <View className="absolute inset-0 bg-black/85 justify-center items-center p-6 z-50">
+          <View className="w-56 h-56 bg-[#111111] border border-[#1E1E1E] rounded-3xl p-6 justify-center items-center shadow-2xl relative overflow-hidden">
+            <View className="absolute w-full h-0.5 bg-[#22C55E] top-0 left-0 shadow-lg shadow-[#22C55E]" />
+            <ActivityIndicator size="large" color="#22C55E" className="mb-4" />
+            <Text className="text-white font-black text-sm font-rounded text-center uppercase tracking-wider">
               Analyzing Food
             </Text>
-            <Text className="text-text-secondary text-xs mt-2 text-center">
+            <Text className="text-[#A1A1AA] text-[10px] mt-2 text-center">
               {loadingStep}
             </Text>
           </View>
