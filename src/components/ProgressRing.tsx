@@ -28,29 +28,31 @@ export default function ProgressRing({
   return (
     <View className="items-center justify-center">
       <View style={{ width: size, height: size }} className="items-center justify-center relative">
-        <Svg width={size} height={size} style={{ transform: [{ rotate: '-90deg' }] }}>
-          {/* Background circle */}
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke="#1C1C1E"
-            strokeWidth={strokeWidth}
-            fill="transparent"
-          />
-          {/* Progress circle */}
-          <Circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            stroke={color}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            fill="transparent"
-          />
-        </Svg>
+        <View style={{ transform: [{ rotate: '-90deg' }] }}>
+          <Svg width={size} height={size}>
+            {/* Background circle */}
+            <Circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke="#1C1C1E"
+              strokeWidth={strokeWidth}
+              fill="transparent"
+            />
+            {/* Progress circle */}
+            <Circle
+              cx={size / 2}
+              cy={size / 2}
+              r={radius}
+              stroke={color}
+              strokeWidth={strokeWidth}
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              fill="transparent"
+            />
+          </Svg>
+        </View>
         {/* Inner Label */}
         <View className="absolute items-center justify-center">
           <Text className="text-white text-sm font-extrabold font-rounded">

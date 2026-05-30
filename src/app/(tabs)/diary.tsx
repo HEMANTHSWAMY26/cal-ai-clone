@@ -188,7 +188,7 @@ export default function DiaryScreen() {
         {filteredMeals.length === 0 ? (
           <View className="py-16 items-center justify-center gap-4">
             <View className="w-12 h-12 rounded-full bg-card-primary border border-card-secondary justify-center items-center">
-              <Feather name="folder-open" size={20} color="#8E8E93" />
+              <Feather name="folder" size={20} color="#8E8E93" />
             </View>
             <View className="items-center">
               <Text className="text-white font-bold">No logs in this category</Text>

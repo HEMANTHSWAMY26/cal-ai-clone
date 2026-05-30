@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { StyleSheet, Dimensions } from 'react-native';
 import { useRouter } from 'expo-router';
-import Animated, { 
+import { 
   useSharedValue, 
   useAnimatedStyle, 
   withTiming, 
@@ -13,6 +13,7 @@ import Animated, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppStore } from '@/store/useAppStore';
 import { View, Text } from '@/tw';
+import { Animated as TWAnimated } from '@/tw/animated';
 
 const { width } = Dimensions.get('window');
 
@@ -92,13 +93,13 @@ export default function SplashScreen() {
 
       <View className="items-center justify-center relative">
         {/* Pulsing Scan Ring */}
-        <Animated.View 
+        <TWAnimated.View 
           style={[styles.pulseRing, animatedPulseStyle]}
           className="absolute border border-accent-green rounded-full"
         />
         
         {/* Main Glowing Circle */}
-        <Animated.View 
+        <TWAnimated.View 
           style={[styles.logoCircle, animatedLogoStyle]}
           className="bg-card-primary border border-accent-green/30 justify-center items-center shadow-lg"
         >
@@ -106,18 +107,18 @@ export default function SplashScreen() {
           <View className="w-10 h-10 rounded-full border-4 border-accent-green shadow-[0_0_15px_rgba(48,209,89,0.8)] justify-center items-center">
             <View className="w-3 h-3 bg-accent-green rounded-full" />
           </View>
-        </Animated.View>
+        </TWAnimated.View>
       </View>
 
       {/* Brand Label */}
-      <Animated.View style={[animatedTextStyle]} className="mt-8 items-center">
+      <TWAnimated.View style={[animatedTextStyle]} className="mt-8 items-center">
         <Text className="text-white text-3xl font-extrabold tracking-[6px] font-rounded">
           CAL<Text className="text-accent-green">.AI</Text>
         </Text>
         <Text className="text-text-secondary text-xs mt-2 uppercase tracking-[3px]">
           Smart Food Tracking
         </Text>
-      </Animated.View>
+      </TWAnimated.View>
 
       {/* Footer disclaimer */}
       <View className="absolute bottom-12 items-center">

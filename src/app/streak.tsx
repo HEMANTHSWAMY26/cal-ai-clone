@@ -58,17 +58,15 @@ export default function StreakScreen() {
           <Feather name="chevron-left" size={20} color="white" />
         </Pressable>
         <Text className="text-white text-lg font-bold font-rounded">Streaks</Text>
-        <View className="w-10 h-10" /> {/* Spacer */}
+        <View className="w-10 h-10" />
       </View>
 
       {/* Giant Flame Card */}
       <View className="mx-6 mt-6 bg-card-primary border border-card-secondary rounded-[32px] p-8 items-center shadow-2xl relative overflow-hidden">
-        {/* Glow decoration */}
         <View className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent-orange/15 rounded-full blur-[60px]" />
 
         <View className="w-32 h-32 bg-accent-orange/10 border border-accent-orange/30 rounded-full justify-center items-center mb-6 relative">
           <Feather name="zap" size={68} color="#FF9F0A" />
-          {/* Flame animation circle */}
           <View className="absolute w-[140%] h-[140%] border border-accent-orange/10 border-dashed rounded-full" />
         </View>
 
